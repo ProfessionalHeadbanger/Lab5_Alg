@@ -72,28 +72,7 @@ int main()
 		Sort(army, n);
 		for (int i = 0; i < n; i++)
 		{
-			if (g && h && army[i].gr_st > army[i].hh_st)
-			{
-				st += army[i].gr_st;
-				g--;
-			}
-			else if (g && h && army[i].gr_st < army[i].hh_st)
-			{
-				st += army[i].hh_st;
-				h--;
-			}
-			else if (!g && h)
-			{
-				st += army[i].hh_st;
-			}
-			else if (g && !h)
-			{
-				st += army[i].gr_st;
-			}
-			else
-			{
-				st += max(army[i].gr_st, army[i].hh_st);
-			}
+			st += max(army[i].gr_st, army[i].hh_st);
 		}
 		cout << st << endl;
 	}
