@@ -72,7 +72,16 @@ int main()
 		Sort(army, n);
 		for (int i = 0; i < n; i++)
 		{
-			st += max(army[i].gr_st, army[i].hh_st);
+			if (army[i].gr_st > army[i].hh_st)
+			{
+				st += army[i].gr_st;
+				g--;
+			}
+			else if (army[i].gr_st < army[i].hh_st)
+			{
+				st += army[i].hh_st;
+				h--;
+			}
 		}
 		cout << st << endl;
 	}
