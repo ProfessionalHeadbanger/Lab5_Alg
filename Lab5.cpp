@@ -20,36 +20,40 @@
 //удовлетворяющей заданным условиям, выведите число - 1
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 struct Warrior
 {
-	int gr_st, hh_st;
-	Warrior() :gr_st(0), hh_st(0) {}
-	Warrior(int gr_st, int hh_st) :gr_st(gr_st), hh_st(hh_st){}
-
-	Warrior& operator = (const Warrior& object)
-	{
-		gr_st = object.gr_st;
-		hh_st = object.hh_st;
-		return *this;
-	}
+	int gr_st, hh_st, diff;
 };
 
-void Sort(Warrior* army, int size)
+bool gr_comp(Warrior first, Warrior second)
 {
-	for (int i = 0; i < size; i++)
+	if (first.gr_st > second.gr_st)
 	{
-		for (int j = 0; j < size - 1; j++)
-		{
-			if ((army[j].gr_st + army[j].hh_st) < (army[j + 1].gr_st + army[j + 1].hh_st))
-			{
-				Warrior temp = army[j];
-				army[j] = army[j + 1];
-				army[j + 1] = temp;
-			}
-		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool diff_comp(Warrior first, Warrior second)
+{
+	if (first.diff == second.diff)
+	{
+		return gr_comp(first, second);
+	}
+	else if (first.diff > second.diff)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -61,7 +65,14 @@ int main()
 	for (int i = 0; i < n; i++)
 	{
 		cin >> army[i].gr_st >> army[i].hh_st;
+		army[i].diff = army[i].gr_st - army[i].hh_st;
 	}
+	sort(army, army+n, diff_comp);
+	/*cout << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << army[i].gr_st << " " << army[i].hh_st << endl;
+	}*/
 	if (g + h > n)
 	{
 		st = -1;
@@ -69,19 +80,17 @@ int main()
 	}
 	else
 	{
-		Sort(army, n);
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < g; i++)
 		{
-			if (army[i].gr_st > army[i].hh_st)
-			{
-				st += army[i].gr_st;
-				g--;
-			}
-			else if (army[i].gr_st < army[i].hh_st)
-			{
-				st += army[i].hh_st;
-				h--;
-			}
+			st += army[i].gr_st;
+		}
+		for (int i = g; i < g + h; i++)
+		{
+			st += army[i].hh_st;
+		}
+		for (int i = g + h; i < n; i++)
+		{
+			st += max(army[i].gr_st, army[i].hh_st);
 		}
 		cout << st << endl;
 	}
